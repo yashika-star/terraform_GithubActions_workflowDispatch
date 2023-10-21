@@ -1,4 +1,4 @@
-name: 'Terraform with workflow dispatch'
+name: 'Terraform destroy with workflow dispatch'
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   terraform:
-    name: 'Terraform with workflow dispatch'
+    name: 'Terraform destroy with workflow dispatch'
     runs-on: ubuntu-latest
     environment: production
 
@@ -49,15 +49,7 @@ jobs:
     - name: Terraform Init
       run: cd module && terraform init
 
-    # Checks that all Terraform configuration files adhere to a canonical format
-    # - name: Terraform Format
-    #   run: cd module && terraform fmt -check
-
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run: cd module && terraform plan -input=false -var "region=${{ github.event.inputs.region }}"
-
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
-      run: cd module && terraform apply -auto-approve -input=false -var "region=${{ github.event.inputs.region }}"
+      run: cd module && terraform destroy -auto-approve -input=false -var "region=${{ github.event.inputs.region }}"
